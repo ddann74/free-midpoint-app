@@ -1,0 +1,64 @@
+import tkinter as tk
+from tkinter import ttk
+
+# Dictionary to store railway stations and their coordinates (latitude, longitude)
+stations = {
+    "Sydney": (-33.8688, 151.2093),
+    "Newcastle": (-32.9282, 151.7817),
+    "Wollongong": (-34.4278, 150.8931),
+    "Central Coast": (-33.3085, 151.4453),
+    "Blue Mountains": (-33.7135, 150.3119),
+    "Coffs Harbour": (-30.2983, 153.1135),
+    "Tamworth": (-31.0902, 150.9322),
+    "Maitland": (-32.7333, 151.5667),
+}
+
+def calculate_midpoint(station1, station2):
+    """Calculate the midpoint between two stations."""
+    lat1, lon1 = stations[station1]
+    lat2, lon2 = stations[station2]
+    
+    midpoint_lat = (lat1 + lat2) / 2
+    midpoint_lon = (lon1 + lon2) / 2
+    
+    return midpoint_lat, midpoint_lon
+
+def on_calculate():
+    """Handle the calculate button click event."""
+    station1 = station1_var.get()
+    station2 = station2_var.get()
+    
+    if station1 and station2:
+        midpoint = calculate_midpoint(station1, station2)
+        result_label.config(text=f"Midpoint: Latitude {midpoint[0]:.4f}, Longitude {midpoint[1]:.4f}")
+    else:
+        result_label.config(text="Please select two stations.")
+
+# Create the main application window
+app = tk.Tk()
+app.title("Railway Station Midpoint Calculator")
+
+# Create dropdown menus for station selection
+station1_var = tk.StringVar()
+station2_var = tk.StringVar()
+
+station1_label = ttk.Label(app, text="Select Station 1:")
+station1_label.pack(pady=5)
+station1_dropdown = ttk.Combobox(app, textvariable=station1_var, values=list(stations.keys()))
+station1_dropdown.pack(pady=5)
+
+station2_label = ttk.Label(app, text="Select Station 2:")
+station2_label.pack(pady=5)
+station2_dropdown = ttk.Combobox(app, textvariable=station2_var, values=list(stations.keys()))
+station2_dropdown.pack(pady=5)
+
+# Create a button to calculate the midpoint
+calculate_button = ttk.Button(app, text="Calculate Midpoint", command=on_calculate)
+calculate_button.pack(pady=20)
+
+# Label to display the result
+result_label = ttk.Label(app, text="")
+result_label.pack(pady=5)
+
+# Run the application
+app.mainloop()
